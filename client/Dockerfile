@@ -24,7 +24,7 @@ ENV VITE_API_BASE=$API_BASE
 ENV VITE_API_PORT=$API_PORT
 
 #Funciona para generar la carpeta /dist
-RUN npm run buid
+RUN npm run build
 
 
 
