@@ -22,9 +22,11 @@ services:
         API_PORT: 8081
     container_name: adj-client
     ports:
-      - "3000:80"
+      - "3000:443"
     networks:
       - adj-net
+    volumes:
+      - certbot-conf:/etc/letsencrypt
     depends_on:
       - database
 
@@ -40,17 +42,24 @@ services:
         DB_NAME: adj-demo
         DB_USER: root
         DB_PASS: root
+        SERVER_SSL_ENABLED: true
+        SERVER_SSL_KEYSTORE: /etc/letsencrypt/live/localhost/keystore.p12
+        SERVER_SSL_KEYSTORE_PASS: changeit
     container_name: adj-server
     ports:
       - "8081:8080"
     networks:
       - adj-net
+    volumes:
+      - certbot-conf:/etc/letsencrypt
     depends_on:
       - frontend
 
 # docker volume create adj-volume
 volumes:
   adj-volume:
+    external: true
+  certbot-conf:
     external: true
 
 # docker network create --driver bridge adj-net
